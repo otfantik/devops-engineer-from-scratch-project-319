@@ -1,7 +1,35 @@
+resource "yandex_vpc_security_group" "pg_sg" {
+  name       = "bulletins-pg-sg"
+  network_id = module.yc-vpc.vpc_id
+
+  ingress {
+    protocol       = "TCP"
+    description    = "PG from K8s nodes subnet"
+    port           = 6432
+    v4_cidr_blocks = ["10.10.0.0/24"]
+  }
+
+  ingress {
+    protocol       = "TCP"
+    description    = "PG from K8s pods"
+    port           = 6432
+    v4_cidr_blocks = ["172.17.0.0/16"]
+  }
+
+  egress {
+    protocol       = "ANY"
+    description    = "Allow all outbound"
+    v4_cidr_blocks = ["0.0.0.0/0"]
+    from_port      = 0
+    to_port        = 65535
+  }
+}
+
 resource "yandex_mdb_postgresql_cluster" "bulletins" {
-  name        = var.pg_cluster_name
-  environment = "PRESTABLE"
-  network_id  = module.yc-vpc.vpc_id
+  name               = var.pg_cluster_name
+  environment        = "PRESTABLE"
+  network_id         = module.yc-vpc.vpc_id
+  security_group_ids = [yandex_vpc_security_group.pg_sg.id]
 
   config {
     version = 16

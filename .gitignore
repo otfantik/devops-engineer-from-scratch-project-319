@@ -20,3 +20,6 @@ key.json
 
 # OS
 .DS_Store
+
+# k8s
+k8s/02-secret.yml
