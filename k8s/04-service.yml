@@ -5,13 +5,15 @@ metadata:
   namespace: bulletins
   labels:
     app: bulletins
+  annotations:
+    yandex.cloud/load-balancer-type: "external"
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: bulletins
   ports:
     - name: http
-      port: 8080
+      port: 80
       targetPort: http
       protocol: TCP
     - name: management

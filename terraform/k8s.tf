@@ -20,9 +20,9 @@ module "kube" {
 
   node_groups = {
     "yc-k8s-ng-01" = {
-      description = "Minimal node group"
+      description = "Node group 1"
       fixed_scale = {
-        size = 1
+        size = 2
       }
       node_cores    = 2
       node_memory   = 4
