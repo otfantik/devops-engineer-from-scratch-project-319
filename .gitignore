@@ -1,0 +1,22 @@
+# Terraform
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+crash.log
+terraform.tfvars
+*.tfvars
+!*.tfvars.example
+tfplan
+
+# SA key (секрет)
+key.json
+*.key.json
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
