@@ -1,0 +1,34 @@
+replicaCount: 2
+
+image:
+  repository: ghcr.io/otfantik/project-devops-deploy
+  tag: "latest"
+  pullPolicy: Always
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 8080
+  actuatorPort: 9090
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+config:
+  SPRING_PROFILES_ACTIVE: "prod"
+  MANAGEMENT_SERVER_PORT: "9090"
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://rc1a-6o5ugii94bvi07c7.mdb.yandexcloud.net:6432/bulletins?sslmode=require"
+  SPRING_DATASOURCE_USERNAME: "bulletins_user"
+  STORAGE_S3_BUCKET: "bulletins-otfanik-319"
+  STORAGE_S3_REGION: "ru-central1"
+  STORAGE_S3_ENDPOINT: "https://storage.yandexcloud.net"
+
+secret:
+  SPRING_DATASOURCE_PASSWORD: ""
+  STORAGE_S3_ACCESS_KEY: ""
+  STORAGE_S3_SECRET_KEY: ""
