@@ -1,0 +1,55 @@
+prometheus:
+  prometheusSpec:
+    remoteWrite:
+      - url: https://monitoring.api.cloud.yandex.net/prometheus/workspaces/mon9t64t8hshu29svs1q/api/v1/write
+        authorization:
+          type: Api-Key
+          credentials:
+            name: monium-credentials
+            key: API_KEY
+    serviceMonitorSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+    resources:
+      requests:
+        memory: 400Mi
+
+additionalPrometheusRulesMap:
+  bulletins-alerts:
+    groups:
+      - name: bulletins.availability
+        rules:
+          - alert: BulletinBoardTargetDown
+            expr: up{job="bulletins-app-metrics"} == 0
+            for: 2m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Bulletin Board metrics target is unavailable"
+              description: "Prometheus cannot scrape {{ $labels.instance }} for more than two minutes."
+
+          - alert: BulletinBoard5xxErrors
+            expr: sum(increase(http_server_requests_seconds_count{job="bulletins-app-metrics",status=~"5.."}[5m])) > 0
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Bulletin Board returns HTTP 5xx responses"
+              description: "At least one HTTP 5xx response was observed during the last five minutes."
+
+          - alert: BulletinBoardHighLatency
+            expr: sum(rate(http_server_requests_seconds_sum{job="bulletins-app-metrics"}[5m])) / clamp_min(sum(rate(http_server_requests_seconds_count{job="bulletins-app-metrics"}[5m])), 0.000001) > 0.5
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Bulletin Board average latency is high"
+              description: "Average HTTP latency has exceeded 500 ms for five minutes."
+
+          - alert: BulletinBoardPodRestarts
+            expr: sum(increase(kube_pod_container_status_restarts_total{namespace="bulletins",pod=~"bulletins-app-.*"}[10m])) > 0
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Bulletin Board pod restarted"
+              description: "At least one application container restart was observed during the last ten minutes."
