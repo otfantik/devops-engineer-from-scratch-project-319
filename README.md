@@ -80,9 +80,9 @@ export YC_FOLDER_ID="$(yc config get folder-id)"
 ### Создайте terraform/terraform.tfvars (не коммитится):
 ```
 hcl
-cloud_id    = "b1g5hcbk2va3o8rk278c"
-folder_id   = "b1g4468gf38p3bpuihht"
-pg_password = "ваш_пароль"
+cloud_id    = "<ваш_cloud_id>"
+folder_id   = "<ваш_folder_id>"
+pg_password = "<ваш_пароль>"
 ```
 Примените:
 ```
@@ -94,7 +94,7 @@ cd ..
 ## 4. Kubernetes (kubeconfig)
 
 ```
-yc managed-kubernetes cluster get-credentials --id catmt905qa7t5jncikpr --external
+yc managed-kubernetes cluster get-credentials --id <ID_КЛАСТЕРА> --external
 ```
 ## 5. Секреты (Lockbox + ESO)
 # Ключ SA для ESO
