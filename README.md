@@ -213,6 +213,13 @@ hexlet-check.yml — автотесты Hexlet (запускаются на ка
 ## <details> <summary>Автоматические тесты Хекслета</summary>
 Тесты запускаются на каждый коммит. За запуск отвечает файл .github/workflows/hexlet-check.yml — не удаляйте и не переименовывайте ни его, ни репозиторий.
 
+### Масштабирование и zero-downtime
+
+- **RollingUpdate:** `maxUnavailable: 0`, `maxSurge: 1` — при обновлении пода новый создается до того, как старый удалится.
+- **PodDisruptionBudget:** `minAvailable: 1` — при эвакуации нод всегда остается минимум 1 доступная реплика.
+- **HorizontalPodAutoscaler:** `minReplicas: 2`, `maxReplicas: 4`, CPU > 70% — автоматическое масштабирование.
+- **Проверка:** `kubectl -n bulletins rollout status deployment bulletins-app`.
+
 </details>
 О Хекслете
 
