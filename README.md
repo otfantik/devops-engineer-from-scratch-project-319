@@ -158,11 +158,22 @@ kubectl -n monitoring get secret prometheus-grafana -o jsonpath="{.data.admin-pa
 http://localhost:9090/rules (Prometheus).
 
 #### Скриншоты:
-![Dashborad](assets/grafana-dashboard.png)
+**Дашборд Grafana:**
+![Dashboard](assets/grafana-dashboard.png)
+
+**Логи в Loki:**
 ![Logs](assets/loki-logs.png)
+
+**Алерты Prometheus:**
 ![Alerts](assets/prometheus-rules.png)
+
+**Targets Prometheus:**
 ![Targets](assets/prometheus-targets.png)
+
+**Метрики в Monium:**
 ![Metrics Monium](assets/monium-metrics.png)
+
+**Дашборд в Monium:**
 ![Dashboard Monium](assets/monium-dashboard.png)
 ## Логи
 
