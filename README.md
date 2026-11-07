@@ -41,8 +41,6 @@
 
 ## Структура репозитория
 
-```text
-.
 ├── .github/workflows/       # CI/CD и автотесты
 ├── assets/                  # Скриншоты для README
 ├── helm/                    # Values для kube-prometheus-stack
@@ -59,18 +57,18 @@
 └── README.md
 Установка
 
-1. Клонирование
+## 1. Клонирование
 
-bash
+bash    
 git clone https://github.com/otfantik/devops-engineer-from-scratch-project-319.git
 cd devops-engineer-from-scratch-project-319
-2. Настройка Yandex Cloud
+## 2. Настройка Yandex Cloud
 
 bash
 export YC_TOKEN="$(yc iam create-token)"
 export YC_CLOUD_ID="$(yc config get cloud-id)"
 export YC_FOLDER_ID="$(yc config get folder-id)"
-3. Инфраструктура (Terraform)
+## 3. Инфраструктура (Terraform)
 
 Создайте terraform/terraform.tfvars (не коммитится):
 
@@ -85,11 +83,11 @@ cd terraform
 terraform init
 terraform apply
 cd ..
-4. Kubernetes (kubeconfig)
+## 4. Kubernetes (kubeconfig)
 
 bash
 yc managed-kubernetes cluster get-credentials --id catmt905qa7t5jncikpr --external
-5. Секреты (Lockbox + ESO)
+## 5. Секреты (Lockbox + ESO)
 
 bash
 # Ключ SA для ESO
@@ -105,11 +103,11 @@ helm install external-secrets ./external-secrets \
 # Создаем SecretStore и ExternalSecret
 kubectl apply -f k8s/eso/
 Важно: sa-key.json и values-secret.yaml не должны попадать в Git (они в .gitignore).
-6. Деплой приложения (Helm)
+## 6. Деплой приложения (Helm)
 
 bash
 helm upgrade --install bulletins-app k8s/bulletin-board -n bulletins
-7. Мониторинг и логи
+## 7. Мониторинг и логи
 
 bash
 # kube-prometheus-stack
@@ -133,7 +131,7 @@ kubectl apply -f k8s/11-loki-datasource.yml
 
 bash
 curl http://62.84.112.60/api/bulletins
-Мониторинг
+## Мониторинг
 
 Grafana: kubectl -n monitoring port-forward svc/prometheus-grafana 3000:80
 (логин admin, пароль: kubectl -n monitoring get secret prometheus-grafana -o jsonpath="{.data.admin-password}" | base64 -d)
@@ -147,21 +145,21 @@ assets/loki-logs.png — логи.
 assets/prometheus-rules.png — алерты.
 assets/prometheus-targets.png — targets.
 assets/monium-metrics.png — метрики в Monium.
-Логи
+## Логи
 
 Grafana → Explore → Loki → {namespace="bulletins"}
 
-Секреты
+## Секреты
 
 Секреты хранятся в Yandex Lockbox (e6qeoml9m7ta0msjhdt1).
 ESO синхронизирует их в Kubernetes Secret bulletins-app-secret каждую минуту.
 
-Ротация:
+## Ротация:
 
 Измените значение в Lockbox (через консоль или yc lockbox secret update).
 ESO автоматически обновит Secret (в течение 1 минуты).
 Перезапустите поды: kubectl -n bulletins rollout restart deployment bulletins-app.
-Makefile
+## Makefile
 
 bash
 make help           # Список команд
