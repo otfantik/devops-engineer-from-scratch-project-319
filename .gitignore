@@ -39,3 +39,4 @@ k8s/**/*-secret.yaml
 k8s/**/*-secret.yml
 k8s/02-secret.yml
 values-secret.yaml
+key.json
