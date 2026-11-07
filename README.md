@@ -64,14 +64,17 @@
 
 ## 1. Клонирование
 
-bash    
+```    
 git clone https://github.com/otfantik/devops-engineer-from-scratch-project-319.git
 cd devops-engineer-from-scratch-project-319
-## 2. Настройка Yandex Cloud
+```
 
+## 2. Настройка Yandex Cloud
+```
 export YC_TOKEN="$(yc iam create-token)"
 export YC_CLOUD_ID="$(yc config get cloud-id)"
 export YC_FOLDER_ID="$(yc config get folder-id)"
+```
 ## 3. Инфраструктура (Terraform)
 
 ### Создайте terraform/terraform.tfvars (не коммитится):
@@ -177,7 +180,10 @@ terraform output lockbox_secret_id
 
 Измените значение в Lockbox (через консоль или yc lockbox secret update).
 ESO автоматически обновит Secret (в течение 1 минуты).
-Перезапустите поды: kubectl -n bulletins rollout restart deployment bulletins-app.
+Перезапустите поды: 
+```
+kubectl -n bulletins rollout restart deployment bulletins-app.
+```
 ## Makefile
 
 ```
