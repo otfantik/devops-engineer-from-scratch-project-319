@@ -56,3 +56,12 @@ output "lockbox_secret_id" {
 output "lockbox_secret_name" {
   value = module.lockbox.name
 }
+
+output "eso_sa_key_id" {
+  value = yandex_iam_service_account_key.eso_key.id
+}
+
+output "eso_sa_key_private" {
+  value     = yandex_iam_service_account_key.eso_key.private_key
+  sensitive = true
+}
